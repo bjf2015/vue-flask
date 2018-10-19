@@ -1,6 +1,7 @@
+
 // api/index.js
 
-const surveys = [{  
+const surveys = [{
   id: 1,
   name: 'Dogs',
   created_at: new Date(2018, 1, 1),
@@ -38,12 +39,48 @@ const surveys = [{
       { id: 22, text: 'Mustang', selected: 0 },
       { id: 23, text: 'Camaro', selected: 0 }]
   }]
-}];
+}]
 
-export function fetchSurveys() {  
+export function fetchSurveys () {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(surveys)
+    }, 300)
+  })
+}
+
+export function fetchSurvey (surveyId) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const survey = surveys.find(survey => survey.id === surveyId)
+      if (survey) {
+        resolve(survey)
+      } else {
+        reject(Error('Survey does not exist'))
+      }
+    }, 300)
+  })
+}
+
+export function saveSurveyResponse (surveyResponse) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const survey = surveys.find(s => s.id === surveyResponse.id)
+      surveyResponse.questions.forEach(responseQ => {
+        const question = survey.questions.find(q => q.id === responseQ.id)
+        const choice = question.find(c => c.id === parseInt(responseQ.choice))
+        choice.selected++
+      })
+      resolve()
+    }, 300)
+  })
+}
+
+export function postNewSurvey (survey) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Saving survey ...', survey)
+      resolve()
     }, 300)
   })
 }
